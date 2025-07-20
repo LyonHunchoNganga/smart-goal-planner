@@ -1,30 +1,272 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-@layer components {
-  .btn {
-    @apply px-4 py-2 bg-blue-500 text-white rounded;
-  }
-  .card {
-    @apply p-4 bg-white shadow-md rounded-lg;
-  }
+:root {
+  --primary-color: #4f46e5;
+  --primary-hover: #4338ca;
+  --danger-color: #ef4444;
+  --danger-hover: #dc2626;
+  --background-color: #f8fafc;
+  --card-background: #ffffff;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --border-color: #e2e8f0;
 }
 
-@layer utilities {
-  .text-primary {
-    @apply text-blue-600;
-  }
-  .bg-secondary {
-    @apply bg-gray-200;
-  }
-  .flex-center {
-    @apply flex items-center justify-center;
-  }
-  .grid-gap {
-    @apply gap-4;
-  }
-  .hidden {
-    @apply hidden;
-  }
+body {
+  background-color: var(--background-color);
+  font-family: 'Inter', sans-serif;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5em;
+}
+
+.btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+  background: linear-gradient(45deg, var(--primary-color), #6366f1);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(45deg, var(--primary-hover), #4f46e5);
+}
+
+.btn-danger {
+  background: linear-gradient(45deg, var(--danger-color), #f87171);
+}
+
+.btn-danger:hover {
+  background: linear-gradient(45deg, var(--danger-hover), #ef4444);
+}
+
+.card {
+  background-color: var(--card-background);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid var(--border-color);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.input {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 1rem;
+  background-color: #f1f5f9;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
+
+.goal-card {
+  margin-bottom: 2rem;
+}
+
+.goal-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.goal-name {
+  font-size: 1.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.goal-category {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.goal-details {
+  text-align: right;
+}
+
+.goal-deadline {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.goal-tags {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tag {
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.tag-high {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.tag-medium {
+  background-color: #fef3c7;
+  color: #b45309;
+}
+
+.tag-low {
+  background-color: #d1fae5;
+  color: #047857;
+}
+
+.tag-in-progress {
+  background-color: #e0e7ff;
+  color: #4338ca;
+}
+
+.tag-completed {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.tag-on-hold {
+  background-color: #e5e7eb;
+  color: #4b5563;
+}
+
+.progress-bar-container {
+  width: 100%;
+  background-color: #e5e7eb;
+  height: 1.25rem;
+  border-radius: 9999px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.progress-bar {
+  background: linear-gradient(45deg, var(--primary-color), #6366f1);
+  height: 100%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: width 0.5s ease;
+}
+
+.goal-finances {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+}
+
+.goal-finances p {
+  background-color: #f8fafc;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.amount-saved {
+  font-weight: 700;
+  color: #16a34a;
+}
+
+.amount-target {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.amount-remaining {
+  font-weight: 700;
+  color: #d97706;
+}
+
+.goal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.app-container {
+  min-height: 100vh;
+}
+
+.app-header {
+  background-color: var(--card-background);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.app-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  text-align: center;
+  color: var(--primary-color);
+  letter-spacing: -1px;
+}
+
+.goal-form {
+  margin-bottom: 2rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.error-message {
+  color: var(--danger-color);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
 }
