@@ -12,7 +12,7 @@ export default function App() {
       <header className="app-header">
         <div className="container">
           <h1 className="app-title">
-            🎯 Smart Goal Planner
+             Smart Goal Planner
           </h1>
         </div>
       </header>
