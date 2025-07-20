@@ -1,61 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function GoalForm({ onAdd }) {
+export default function GoalForm({ onSubmit, initialData }) {
   const [goal, setGoal] = useState({
-    name: "",
-    targetAmount: "",
-    category: "",
+    title: "",
+    description: "",
+    progress: 0,
     deadline: "",
+    ...initialData
   });
 
-  function handleChange(e) {
+  const handleChange = (e) => {
     setGoal({ ...goal, [e.target.name]: e.target.value });
-  }
+  };
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    onAdd(goal);
-    setGoal({ name: "", targetAmount: "", category: "", deadline: "" });
-  }
+    onSubmit(goal);
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-4 rounded shadow mb-4">
-      <h2 className="text-lg font-bold mb-2">Add New Goal</h2>
-      <input
-        name="name"
-        placeholder="Goal Name"
-        value={goal.name}
-        onChange={handleChange}
-        className="block w-full mb-2 p-2 border rounded"
-        required
-      />
-      <input
-        name="targetAmount"
-        type="number"
-        placeholder="Target Amount"
-        value={goal.targetAmount}
-        onChange={handleChange}
-        className="block w-full mb-2 p-2 border rounded"
-        required
-      />
-      <input
-        name="category"
-        placeholder="Category"
-        value={goal.category}
-        onChange={handleChange}
-        className="block w-full mb-2 p-2 border rounded"
-      />
-      <input
-        name="deadline"
-        type="date"
-        value={goal.deadline}
-        onChange={handleChange}
-        className="block w-full mb-2 p-2 border rounded"
-        required
-      />
-      <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-        Add Goal
-      </button>
+    <form onSubmit={handleSubmit} className="bg-white p-4 rounded-xl shadow-md mb-4">
+      <input type="text" name="title" value={goal.title} onChange={handleChange} placeholder="Goal Title" required className="block w-full p-2 mb-2 border rounded" />
+      <textarea name="description" value={goal.description} onChange={handleChange} placeholder="Description" className="block w-full p-2 mb-2 border rounded" />
+      <input type="number" name="progress" value={goal.progress} onChange={handleChange} placeholder="Progress (%)" min="0" max="100" className="block w-full p-2 mb-2 border rounded" />
+      <input type="date" name="deadline" value={goal.deadline} onChange={handleChange} className="block w-full p-2 mb-2 border rounded" />
+      <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Save Goal</button>
     </form>
   );
 }
+import React from "react";  

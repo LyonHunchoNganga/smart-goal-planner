@@ -1,0 +1,11 @@
+{
+  "goals": [
+    {
+      "id": 1,
+      "title": "Learn React",
+      "description": "Complete a React course and build a project",
+      "progress": 40,
+      "deadline": "2025-08-10"
+    }
+  ]
+}
