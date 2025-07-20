@@ -1,15 +1,15 @@
-import { create } from "zustand";
+import create from "zustand";
 import toast from "react-hot-toast";
 import { getGoals, addGoal, deleteGoal, updateGoal } from "../api/goals";
 
 const useGoalStore = create((set) => ({
   goals: [],
-  fetchGoals: () => {
-    const goals = getGoals();
+  fetchGoals: async () => {
+    const goals = await getGoals();
     set({ goals });
   },
-  addGoal: (newGoal) => {
-    const addedGoal = addGoal(newGoal);
+  addGoal: async (newGoal) => {
+    const addedGoal = await addGoal(newGoal);
     if (addedGoal) {
       set((state) => ({ goals: [...state.goals, addedGoal] }));
       toast.success("Goal added successfully!");
@@ -17,15 +17,15 @@ const useGoalStore = create((set) => ({
       toast.error("Failed to add goal.");
     }
   },
-  deleteGoal: (id) => {
-    deleteGoal(id);
+  deleteGoal: async (id) => {
+    await deleteGoal(id);
     set((state) => ({
       goals: state.goals.filter((goal) => goal.id !== id),
     }));
     toast.success("Goal deleted successfully!");
   },
-  updateGoal: (updatedGoal) => {
-    const goal = updateGoal(updatedGoal);
+  updateGoal: async (updatedGoal) => {
+    const goal = await updateGoal(updatedGoal);
     if (goal) {
       set((state) => ({
         goals: state.goals.map((g) => (g.id === goal.id ? goal : g)),

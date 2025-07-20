@@ -1,65 +1,69 @@
-import { goals as initialGoals } from "./db.json";
+const API_URL = "http://localhost:3000/goals";
 
-const GOAL_KEY = "goals";
-
-// Function to generate a unique ID
-const generateCUID = () => {
-  const timestamp = Date.now().toString(36);
-  const randomPart = Math.random().toString(36).substr(2, 9);
-  return `c${timestamp}${randomPart}`;
-};
-
-
-function getGoals() {
+async function getGoals() {
   try {
-    const goalsFromStorage = localStorage.getItem(GOAL_KEY);
-    if (goalsFromStorage) {
-      return JSON.parse(goalsFromStorage);
+    const response = await fetch(API_URL);
+    if (!response.ok) {
+      throw new Error("Failed to fetch goals");
     }
-    localStorage.setItem(GOAL_KEY, JSON.stringify(initialGoals));
-    return initialGoals;
+    return await response.json();
   } catch (error) {
-    console.error("Error getting goals from local storage", error);
+    console.error("Error getting goals:", error);
     return [];
   }
 }
 
-function addGoal(goal) {
+async function addGoal(goal) {
   try {
-    const currentGoals = getGoals();
-    const newGoal = {
-      ...goal,
-      id: generateCUID(),
-    };
-    const updatedGoals = [...currentGoals, newGoal];
-    localStorage.setItem(GOAL_KEY, JSON.stringify(updatedGoals));
-    return newGoal;
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...goal,
+        savedAmount: 0,
+        createdAt: new Date().toISOString(),
+      }),
+    });
+    if (!response.ok) {
+      throw new Error("Failed to add goal");
+    }
+    return await response.json();
   } catch (error) {
-    console.error("Error adding goal to local storage", error);
+    console.error("Error adding goal:", error);
     return null;
   }
 }
 
-function deleteGoal(id) {
+async function deleteGoal(id) {
   try {
-    const currentGoals = getGoals();
-    const updatedGoals = currentGoals.filter(goal => goal.id !== id);
-    localStorage.setItem(GOAL_KEY, JSON.stringify(updatedGoals));
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) {
+      throw new Error("Failed to delete goal");
+    }
   } catch (error) {
-    console.error("Error deleting goal from local storage", error);
+    console.error("Error deleting goal:", error);
   }
 }
 
-function updateGoal(updatedGoal) {
+async function updateGoal(updatedGoal) {
   try {
-    const currentGoals = getGoals();
-    const updatedGoals = currentGoals.map(goal =>
-      goal.id === updatedGoal.id ? updatedGoal : goal
-    );
-    localStorage.setItem(GOAL_KEY, JSON.stringify(updatedGoals));
-    return updatedGoal;
+    const response = await fetch(`${API_URL}/${updatedGoal.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedGoal),
+    });
+    if (!response.ok) {
+      throw new Error("Failed to update goal");
+    }
+    return await response.json();
   } catch (error) {
-    console.error("Error updating goal in local storage", error);
+    console.error("Error updating goal:", error);
     return null;
   }
 }

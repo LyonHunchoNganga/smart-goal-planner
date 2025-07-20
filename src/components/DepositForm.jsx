@@ -1,70 +1,49 @@
-import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import useGoalStore from "../store/useGoalStore";
 
-export default function DepositForm({ goals, onDeposit }) {
-  const [goalId, setGoalId] = useState("");
-  const [amount, setAmount] = useState("");
+export default function DepositForm() {
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const { goals, updateGoal } = useGoalStore();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const parsedAmount = parseFloat(amount);
-    if (!goalId || isNaN(parsedAmount) || parsedAmount <= 0) return;
-
-    onDeposit(goalId, parsedAmount);
-    setGoalId("");
-    setAmount("");
+  const onFormSubmit = (data) => {
+    const goal = goals.find(g => g.id === data.goalId);
+    if (goal) {
+      const updatedGoal = {
+        ...goal,
+        savedAmount: goal.savedAmount + data.amount
+      };
+      updateGoal(updatedGoal);
+      reset();
+    }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="card mb-6 space-y-4"
-    >
-      <h2 className="text-lg font-bold">💰 Make a Deposit</h2>
-
+    <form onSubmit={handleSubmit(onFormSubmit)} className="bg-white p-4 rounded-xl shadow mb-4">
+      <h3 className="text-lg font-bold mb-2">Make a Deposit</h3>
       <div>
-        <label htmlFor="goal-select" className="block text-sm font-medium text-gray-600">
-          Select Goal
-        </label>
         <select
-          id="goal-select"
-          value={goalId}
-          onChange={(e) => setGoalId(e.target.value)}
-          required
-          className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="block w-full p-2 mb-2 border rounded"
+          {...register("goalId", { required: "Please select a goal" })}
         >
-          <option value="">-- Choose a Goal --</option>
-          {goals.map((goal) => (
-            <option key={goal.id} value={goal.id}>
-              {goal.name}
-            </option>
+          <option value="">Select a Goal</option>
+          {goals.map(goal => (
+            <option key={goal.id} value={goal.id}>{goal.name}</option>
           ))}
         </select>
+        {errors.goalId && <p className="text-red-500 text-xs">{errors.goalId.message}</p>}
       </div>
-
       <div>
-        <label htmlFor="amount" className="block text-sm font-medium text-gray-600">
-          Amount
-        </label>
         <input
-          id="amount"
           type="number"
-          min="1"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          placeholder="Enter deposit amount"
-          required
-          className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Amount"
+          className="block w-full p-2 mb-2 border rounded"
+          {...register("amount", { required: "Amount is required", valueAsNumber: true, min: { value: 1, message: "Amount must be at least 1" } })}
         />
+        {errors.amount && <p className="text-red-500 text-xs">{errors.amount.message}</p>}
       </div>
-
-      <button
-        type="submit"
-        className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition"
-      >
-        Deposit Funds
+      <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">
+        Deposit
       </button>
     </form>
   );
 }
-
-

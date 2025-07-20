@@ -1,32 +1,29 @@
-import React from "react";
-import { daysLeft } from "../utils/dateUtils";
+import useGoalStore from "../store/useGoalStore";
 
-export default function Overview({ goals }) {
+export default function Overview() {
+  const { goals } = useGoalStore();
+
   const totalGoals = goals.length;
-  const totalSaved = goals.reduce((sum, g) => sum + g.savedAmount, 0);
-  const completed = goals.filter(g => g.savedAmount >= g.targetAmount).length;
-
-  const warnings = [];
-  const overdue = [];
-
-  goals.forEach(goal => {
-    const days = daysLeft(goal.deadline);
-    if (days <= 30 && days >= 0 && goal.savedAmount < goal.targetAmount) {
-      warnings.push(goal);
-    }
-    if (days < 0 && goal.savedAmount < goal.targetAmount) {
-      overdue.push(goal);
-    }
-  });
+  const totalSaved = goals.reduce((sum, goal) => sum + goal.savedAmount, 0);
+  const completedGoals = goals.filter(goal => goal.savedAmount >= goal.targetAmount).length;
 
   return (
-    <div className="bg-white p-4 rounded shadow mb-4">
-      <h2 className="text-xl font-bold mb-3">📊 Overview</h2>
-      <p><strong>Total Goals:</strong> {totalGoals}</p>
-      <p><strong>Total Saved:</strong> ${totalSaved.toLocaleString()}</p>
-      <p><strong>Completed Goals:</strong> {completed}</p>
-      <p><strong>Goals Near Deadline:</strong> {warnings.length}</p>
-      <p><strong>Overdue Goals:</strong> {overdue.length}</p>
+    <div className="bg-white p-4 rounded-xl shadow mb-4">
+      <h3 className="text-lg font-bold mb-2">Overview</h3>
+      <div className="grid grid-cols-3 gap-4">
+        <div className="text-center">
+          <p className="text-2xl font-bold">{totalGoals}</p>
+          <p className="text-sm text-gray-500">Total Goals</p>
+        </div>
+        <div className="text-center">
+          <p className="text-2xl font-bold">${totalSaved.toLocaleString()}</p>
+          <p className="text-sm text-gray-500">Total Saved</p>
+        </div>
+        <div className="text-center">
+          <p className="text-2xl font-bold">{completedGoals}</p>
+          <p className="text-sm text-gray-500">Completed Goals</p>
+        </div>
+      </div>
     </div>
   );
 }

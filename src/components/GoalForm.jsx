@@ -6,81 +6,52 @@ export default function GoalForm({ onSubmit, initialData = {} }) {
   });
 
   const onFormSubmit = (data) => {
-    const goalData = {
-      ...data,
-      currentAmount: initialData.currentAmount || 0,
-      status: initialData.status || "in-progress",
-      createdAt: initialData.createdAt || new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-    onSubmit(goalData);
+    onSubmit(data);
     if (!initialData.name) {
       reset();
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onFormSubmit)} className="card goal-form">
-      <div className="form-grid">
-        <div className="form-group">
-          <input
-            type="text"
-            placeholder="Goal Name"
-            className="input"
-            {...register("name", { required: "Goal name is required" })}
-          />
-          {errors.name && <p className="error-message">{errors.name.message}</p>}
-        </div>
-        <div className="form-group">
-          <input
-            type="number"
-            placeholder="Target Amount"
-            className="input"
-            {...register("targetAmount", { required: "Target amount is required", valueAsNumber: true })}
-          />
-          {errors.targetAmount && <p className="error-message">{errors.targetAmount.message}</p>}
-        </div>
-        <div className="form-group">
-          <input
-            type="text"
-            placeholder="Category"
-            className="input"
-            {...register("category", { required: "Category is required" })}
-          />
-          {errors.category && <p className="error-message">{errors.category.message}</p>}
-        </div>
-        <div className="form-group">
-          <input
-            type="date"
-            className="input"
-            {...register("deadline", { required: "Deadline is required" })}
-          />
-          {errors.deadline && <p className="error-message">{errors.deadline.message}</p>}
-        </div>
-        <div className="form-group">
-          <select
-            className="input"
-            {...register("priority", { required: "Priority is required" })}
-          >
-            <option value="">Select Priority</option>
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </select>
-          {errors.priority && <p className="error-message">{errors.priority.message}</p>}
-        </div>
-        <div className="form-group full-width">
-          <textarea
-            placeholder="Notes"
-            className="input"
-            {...register("notes")}
-          />
-        </div>
+    <form onSubmit={handleSubmit(onFormSubmit)} className="bg-white p-4 rounded-xl shadow mb-4">
+      <div>
+        <input
+          type="text"
+          placeholder="Goal Name"
+          className="block w-full p-2 mb-2 border rounded"
+          {...register("name", { required: "Goal name is required" })}
+        />
+        {errors.name && <p className="text-red-500 text-xs">{errors.name.message}</p>}
       </div>
-      <button type="submit" className="btn btn-primary">
+      <div>
+        <input
+          type="number"
+          placeholder="Target Amount"
+          className="block w-full p-2 mb-2 border rounded"
+          {...register("targetAmount", { required: "Target amount is required", valueAsNumber: true })}
+        />
+        {errors.targetAmount && <p className="text-red-500 text-xs">{errors.targetAmount.message}</p>}
+      </div>
+      <div>
+        <input
+          type="text"
+          placeholder="Category"
+          className="block w-full p-2 mb-2 border rounded"
+          {...register("category", { required: "Category is required" })}
+        />
+        {errors.category && <p className="text-red-500 text-xs">{errors.category.message}</p>}
+      </div>
+      <div>
+        <input
+          type="date"
+          className="block w-full p-2 mb-2 border rounded"
+          {...register("deadline", { required: "Deadline is required" })}
+        />
+        {errors.deadline && <p className="text-red-500 text-xs">{errors.deadline.message}</p>}
+      </div>
+      <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
         {initialData.name ? "Update Goal" : "Add Goal"}
       </button>
     </form>
   );
 }
-
