@@ -27,8 +27,8 @@ A modern, responsive React application for managing your financial goals. Built 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/smart-goal-planner.git
-cd smart-goal-planner
+git clone https://github.com/
+LyonHunchoNganga smart-goal-planner
 ```
 
 ### 2. Install Dependencies
@@ -43,7 +43,7 @@ npm install
 npm run dev
 ```
 
-This will start the Vite development server at `http://localhost:5173`.
+This will start the Vite development server at provided server
 
 ### 4. (Optional) Run the JSON Server
 
@@ -84,4 +84,4 @@ smart-goal-planner/
 ├── .gitignore
 ├── index.html
 ├── package.json
-└── tailwind.config.js
+
