@@ -6,14 +6,14 @@
   --danger-color: #ef4444;
   --danger-hover: #dc2626;
   --background-color: #2e1c2a;
-  --card-background: #ffffff;
+  --card-background: #e2e2bb;
   --text-primary: #1e293b;
   --text-secondary: #64748b;
-  --border-color: #e2e8f0;
+  --border-color: #a0b1c6;
 }
 
 body {
-  background-color: var(--background-color);
+  background-color: var(--card-background);
   font-family: 'Inter', sans-serif;
   color: var(--text-primary);
   line-height: 1.6;
