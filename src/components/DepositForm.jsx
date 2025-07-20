@@ -19,32 +19,45 @@ export default function DepositForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onFormSubmit)} className="bg-white p-4 rounded-xl shadow mb-4">
+    <form onSubmit={handleSubmit(onFormSubmit)} className="card goal-form">
       <h3 className="text-lg font-bold mb-2">Make a Deposit</h3>
-      <div>
+      <div className="form-group">
         <select
-          className="block w-full p-2 mb-2 border rounded"
+          className="input"
           {...register("goalId", { required: "Please select a goal" })}
+          disabled={goals.length === 0}
         >
           <option value="">Select a Goal</option>
           {goals.map(goal => (
             <option key={goal.id} value={goal.id}>{goal.name}</option>
           ))}
         </select>
-        {errors.goalId && <p className="text-red-500 text-xs">{errors.goalId.message}</p>}
+        {errors.goalId && <p className="error-message">{errors.goalId.message}</p>}
       </div>
-      <div>
+      <div className="form-group">
         <input
           type="number"
           placeholder="Amount"
-          className="block w-full p-2 mb-2 border rounded"
-          {...register("amount", { required: "Amount is required", valueAsNumber: true, min: { value: 1, message: "Amount must be at least 1" } })}
+          className="input"
+          {...register("amount", { 
+            required: "Amount is required", 
+            valueAsNumber: true, 
+            min: { value: 1, message: "Amount must be at least 1" } 
+          })}
+          disabled={goals.length === 0}
         />
-        {errors.amount && <p className="text-red-500 text-xs">{errors.amount.message}</p>}
+        {errors.amount && <p className="error-message">{errors.amount.message}</p>}
       </div>
-      <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">
+      <button 
+        type="submit" 
+        className="btn btn-primary" 
+        disabled={goals.length === 0}
+      >
         Deposit
       </button>
+      {goals.length === 0 && (
+        <p className="text-sm text-gray-500 mt-2">Add a goal first to make deposits</p>
+      )}
     </form>
   );
 }

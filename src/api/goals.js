@@ -1,33 +1,65 @@
 const API_URL = "http://localhost:3000/goals";
-const LOCAL_STORAGE_KEY = "smart-goal-planner-goals";
+const STORAGE_KEY = "smart-goal-planner-goals";
 let useLocalStorage = false;
 
 // Helper functions for localStorage
 function getLocalGoals() {
-  const goals = localStorage.getItem(LOCAL_STORAGE_KEY);
+  const goals = localStorage.getItem(STORAGE_KEY);
   return goals ? JSON.parse(goals) : [];
 }
 
 function saveLocalGoals(goals) {
-  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(goals));
-  return goals;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(goals));
 }
 
-// Check if API is available
-async function checkApiAvailability() {
+// Check if the server is available
+async function checkServerAvailability() {
   try {
-    const response = await fetch(API_URL, { method: 'HEAD', timeout: 1000 });
-    useLocalStorage = !response.ok;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 1000);
+    
+    const response = await fetch(API_URL, { 
+      method: 'HEAD',
+      signal: controller.signal 
+    });
+    
+    clearTimeout(timeoutId);
     return response.ok;
   } catch (error) {
-    console.warn("API not available, using localStorage instead");
-    useLocalStorage = true;
+    console.log("Server unavailable, using localStorage fallback");
     return false;
   }
 }
 
-// Initialize by checking API availability
-checkApiAvailability();
+// Initialize and check server availability
+(async () => {
+  useLocalStorage = !(await checkServerAvailability());
+  
+  // If using localStorage and no data exists, initialize with sample data
+  if (useLocalStorage && !localStorage.getItem(STORAGE_KEY)) {
+    const sampleGoals = [
+      {
+        id: "1",
+        name: "Travel Fund - Japan",
+        targetAmount: 5000,
+        savedAmount: 3200,
+        category: "Travel",
+        deadline: "2025-12-31",
+        createdAt: "2024-01-15"
+      },
+      {
+        id: "2",
+        name: "Emergency Fund",
+        targetAmount: 10000,
+        savedAmount: 7500,
+        category: "Emergency",
+        deadline: "2026-06-30",
+        createdAt: "2023-05-01"
+      }
+    ];
+    saveLocalGoals(sampleGoals);
+  }
+})();
 
 async function getGoals() {
   if (useLocalStorage) {
@@ -48,15 +80,14 @@ async function getGoals() {
 }
 
 async function addGoal(goal) {
-  const newGoal = {
-    ...goal,
-    id: useLocalStorage ? String(Date.now()) : goal.id,
-    savedAmount: goal.savedAmount || 0,
-    createdAt: new Date().toISOString()
-  };
-  
   if (useLocalStorage) {
     const goals = getLocalGoals();
+    const newGoal = {
+      ...goal,
+      id: Date.now().toString(),
+      savedAmount: 0,
+      createdAt: new Date().toISOString()
+    };
     goals.push(newGoal);
     saveLocalGoals(goals);
     return newGoal;
@@ -68,7 +99,11 @@ async function addGoal(goal) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(newGoal),
+      body: JSON.stringify({
+        ...goal,
+        savedAmount: 0,
+        createdAt: new Date().toISOString(),
+      }),
     });
     if (!response.ok) {
       throw new Error("Failed to add goal");

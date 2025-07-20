@@ -4,11 +4,11 @@ export default function Overview() {
   const { goals } = useGoalStore();
 
   const totalGoals = goals.length;
-  const totalSaved = goals.reduce((sum, goal) => sum + goal.savedAmount, 0);
-  const completedGoals = goals.filter(goal => goal.savedAmount >= goal.targetAmount).length;
+  const totalSaved = goals.reduce((sum, goal) => sum + (goal.savedAmount || 0), 0);
+  const completedGoals = goals.filter(goal => (goal.savedAmount || 0) >= goal.targetAmount).length;
 
   return (
-    <div className="bg-white p-4 rounded-xl shadow mb-4">
+    <div className="card mb-4">
       <h3 className="text-lg font-bold mb-2">Overview</h3>
       <div className="grid grid-cols-3 gap-4">
         <div className="text-center">
