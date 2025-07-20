@@ -1,4 +1,4 @@
-# 🎯 SMART Goal Planner
+#  SMART Goal Planner
 
 A modern, responsive React application for managing your financial goals. Built with Vite, Tailwind CSS, and React Router, this application provides a seamless experience for tracking your savings and achieving your dreams.
 
