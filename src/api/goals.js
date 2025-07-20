@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/goals";
+const API_URL = "/api/goals";
 const STORAGE_KEY = "smart-goal-planner-goals";
 let useLocalStorage = false;
 
