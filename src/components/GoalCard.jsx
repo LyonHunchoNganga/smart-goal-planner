@@ -2,30 +2,40 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export default function GoalCard({ goal, onDelete }) {
-  const progress = Math.min(100, Math.round((goal.savedAmount / goal.targetAmount) * 100));
-  const remaining = goal.targetAmount - goal.savedAmount;
+  const progress = Math.min(100, Math.round((goal.currentAmount / goal.targetAmount) * 100));
+  const remaining = goal.targetAmount - goal.currentAmount;
 
   return (
-    <div className="bg-white shadow-md p-4 rounded-xl mb-4">
-      <h2 className="text-xl font-semibold">{goal.name}</h2>
-      <p className="text-sm text-gray-600">Category: {goal.category}</p>
-
-      <div className="my-2">
-        <div className="w-full bg-gray-200 rounded-full h-2.5">
-          <div
-            className="bg-green-500 h-2.5 rounded-full"
-            style={{ width: `${progress}%` }}
-          ></div>
+    <div className="card goal-card">
+      <div className="goal-card-header">
+        <div>
+          <h2 className="goal-name">{goal.name}</h2>
+          <p className="goal-category">Category: {goal.category}</p>
         </div>
-        <p className="text-xs mt-1">Progress: {progress}% (${goal.savedAmount} of ${goal.targetAmount})</p>
-        <p className="text-xs text-gray-500">Remaining: ${remaining}</p>
+        <div className="goal-details">
+          <div className="goal-deadline">Deadline: {new Date(goal.deadline).toLocaleDateString()}</div>
+          <div className="goal-tags">
+            <span className={`tag tag-${goal.priority}`}>{goal.priority}</span>
+            <span className={`tag tag-${goal.status}`}>{goal.status}</span>
+          </div>
+        </div>
       </div>
 
-      <p className="text-xs text-gray-400">Deadline: {goal.deadline}</p>
+      <div className="progress-bar-container">
+        <div className="progress-bar" style={{ width: `${progress}%` }}>
+          {progress > 10 && `${progress}%`}
+        </div>
+      </div>
 
-      <div className="flex gap-2 mt-3">
-        <Link to={`/goals/${goal.id}`} className="text-blue-600 hover:underline">Edit</Link>
-        <button onClick={() => onDelete(goal.id)} className="text-red-500 hover:underline">Delete</button>
+      <div className="goal-finances">
+        <p>Saved: <span className="amount-saved">${goal.currentAmount}</span></p>
+        <p>Target: <span className="amount-target">${goal.targetAmount}</span></p>
+        <p>Remaining: <span className="amount-remaining">${remaining}</span></p>
+      </div>
+
+      <div className="goal-actions">
+        <Link to={`/edit-goal/${goal.id}`} className="btn btn-primary">Edit</Link>
+        <button onClick={() => onDelete(goal.id)} className="btn btn-danger">Delete</button>
       </div>
     </div>
   );
