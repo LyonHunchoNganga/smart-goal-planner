@@ -1,12 +1,68 @@
-# React + Vite
+# 🎯 SMART Goal Planner
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive React application for managing financial goals — built with Vite, Tailwind CSS, React Router, and a local JSON server backend.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- ✅ Add, edit, and delete SMART goals
+- 💰 Make deposits and track savings progress
+- 📅 View deadlines and goal completion status
+- ⚠️ Warnings for upcoming and overdue deadlines
+- 📊 Overview dashboard showing total progress
+- 💾 Data persistence using `json-server`
+- 🎨 Styled using Tailwind CSS
+- 🔁 Navigation via React Router
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠️ Getting Started
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-username/smart-goal-planner.git
+cd smart-goal-planner
+2. Install Dependencies
+bash
+Copy
+Edit
+npm install
+3. Start the Development Server
+bash
+Copy
+Edit
+npm run dev
+4. Start the JSON Server
+bash
+Copy
+Edit
+npm run start:json-server
+This runs a mock REST API at http://localhost:3000/goals
+
+🧱 Folder Structure
+lua
+Copy
+Edit
+smart-goal-planner/
+├── db.json
+├── index.html
+├── package.json
+├── tailwind.config.js
+├── postcss.config.js
+├── vite.config.js
+├── src/
+│   ├── App.jsx
+│   ├── main.jsx
+│   ├── index.css
+│   ├── components/
+│   │   ├── GoalCard.jsx
+│   │   ├── GoalForm.jsx
+│   │   ├── DepositForm.jsx
+│   │   └── Overview.jsx
+│   ├── pages/
+│   │   ├── Dashboard.jsx
+│   │   └── EditGoal.jsx
+│   └── utils/
+│       └── dateUtils.js
