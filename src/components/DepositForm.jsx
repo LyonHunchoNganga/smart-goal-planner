@@ -6,11 +6,12 @@ export default function DepositForm() {
   const { goals, updateGoal } = useGoalStore();
 
   const onFormSubmit = (data) => {
-    const goal = goals.find(g => g.id === data.goalId);
+    const goalId = isNaN(parseInt(data.goalId)) ? data.goalId : parseInt(data.goalId);
+    const goal = goals.find(g => g.id === goalId);
     if (goal) {
       const updatedGoal = {
         ...goal,
-        savedAmount: goal.savedAmount + data.amount
+        savedAmount: (goal.savedAmount || 0) + Number(data.amount)
       };
       updateGoal(updatedGoal);
       reset();

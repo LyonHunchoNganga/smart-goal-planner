@@ -7,7 +7,7 @@ export default function EditGoal() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { goals, updateGoal } = useGoalStore();
-  const goalToEdit = goals.find((goal) => goal.id === parseInt(id));
+  const goalToEdit = goals.find((goal) => goal.id === (isNaN(parseInt(id)) ? id : parseInt(id)));
 
   const handleUpdateGoal = (updatedGoal) => {
     updateGoal({ ...goalToEdit, ...updatedGoal });
