@@ -1,0 +1,17 @@
+{
+  "goals": [
+    {
+      "id": "clxqz3jzj00003b6k8z9y1z2x",
+      "name": "Save for a New Laptop",
+      "targetAmount": 1500,
+      "currentAmount": 250,
+      "category": "Technology",
+      "deadline": "2025-12-31T23:59:59.999Z",
+      "createdAt": "2024-07-20T18:00:00.000Z",
+      "updatedAt": "2024-07-20T18:00:00.000Z",
+      "status": "in-progress",
+      "priority": "high",
+      "notes": "Looking for a MacBook Pro with M3 chip."
+    }
+  ]
+}

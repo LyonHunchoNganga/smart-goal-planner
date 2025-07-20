@@ -1,28 +1,49 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import GoalForm from "../components/GoalForm";
+import React from "react";
+import { useParams } from "react-router-dom";
+import useGoalStore from "../store/useGoalStore";
+import { daysLeft } from "../utils/dateUtils";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 export default function GoalDetails() {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const [goal, setGoal] = useState(null);
+  const { goals } = useGoalStore();
+  const goal = goals.find((g) => g.id === parseInt(id));
 
-  useEffect(() => {
-    fetch(`http://localhost:3000/goals/${id}`)
-      .then(res => res.json())
-      .then(data => setGoal(data));
-  }, [id]);
+  if (!goal) {
+    return <div>Goal not found</div>;
+  }
 
-  const handleUpdate = (updatedGoal) => {
-    fetch(`http://localhost:3000/goals/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedGoal)
-    })
-    .then(() => navigate("/"));
-  };
+  const progress = (goal.savedAmount / goal.targetAmount) * 100;
+  const data = [
+    { name: 'Progress', saved: goal.savedAmount, target: goal.targetAmount },
+  ];
 
   return (
-    goal && <GoalForm onSubmit={handleUpdate} initialData={goal} />
+    <div className="card">
+      <h2 className="text-2xl font-bold mb-4">{goal.name}</h2>
+      <p><strong>Category:</strong> {goal.category}</p>
+      <p><strong>Target Amount:</strong> ${goal.targetAmount}</p>
+      <p><strong>Saved Amount:</strong> ${goal.savedAmount}</p>
+      <p><strong>Deadline:</strong> {goal.deadline}</p>
+      <p><strong>Days Left:</strong> {daysLeft(goal.deadline)}</p>
+      <div className="w-full bg-gray-200 rounded-full h-4 my-4">
+        <div
+          className="bg-blue-600 h-4 rounded-full"
+          style={{ width: `${progress}%` }}
+        ></div>
+      </div>
+      <div style={{ width: '100%', height: 300 }}>
+        <ResponsiveContainer>
+          <BarChart data={data}>
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="saved" fill="#8884d8" />
+            <Bar dataKey="target" fill="#82ca9d" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
   );
 }

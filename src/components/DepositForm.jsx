@@ -17,9 +17,9 @@ export default function DepositForm({ goals, onDeposit }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white p-6 shadow-lg rounded-2xl space-y-4 mb-6"
+      className="card mb-6 space-y-4"
     >
-      <h2 className="text-xl font-bold text-gray-800">💰 Make a Deposit</h2>
+      <h2 className="text-lg font-bold">💰 Make a Deposit</h2>
 
       <div>
         <label htmlFor="goal-select" className="block text-sm font-medium text-gray-600">
