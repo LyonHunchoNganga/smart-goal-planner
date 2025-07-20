@@ -33,7 +33,8 @@ async function checkServerAvailability() {
 
 // Initialize and check server availability
 (async () => {
-  useLocalStorage = !(await checkServerAvailability());
+  // Force localStorage for now to ensure it works
+  useLocalStorage = true;
   
   // If using localStorage and no data exists, initialize with sample data
   if (useLocalStorage && !localStorage.getItem(STORAGE_KEY)) {
