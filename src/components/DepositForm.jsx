@@ -1,43 +1,70 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 export default function DepositForm({ goals, onDeposit }) {
   const [goalId, setGoalId] = useState("");
   const [amount, setAmount] = useState("");
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    onDeposit(goalId, parseFloat(amount));
+    const parsedAmount = parseFloat(amount);
+    if (!goalId || isNaN(parsedAmount) || parsedAmount <= 0) return;
+
+    onDeposit(goalId, parsedAmount);
     setGoalId("");
     setAmount("");
-  }
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-4 shadow rounded mb-4">
-      <h2 className="text-lg font-bold mb-2">Make a Deposit</h2>
-      <select
-        value={goalId}
-        onChange={(e) => setGoalId(e.target.value)}
-        className="block w-full mb-2 p-2 border rounded"
-        required
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white p-6 shadow-lg rounded-2xl space-y-4 mb-6"
+    >
+      <h2 className="text-xl font-bold text-gray-800">💰 Make a Deposit</h2>
+
+      <div>
+        <label htmlFor="goal-select" className="block text-sm font-medium text-gray-600">
+          Select Goal
+        </label>
+        <select
+          id="goal-select"
+          value={goalId}
+          onChange={(e) => setGoalId(e.target.value)}
+          required
+          className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="">-- Choose a Goal --</option>
+          {goals.map((goal) => (
+            <option key={goal.id} value={goal.id}>
+              {goal.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label htmlFor="amount" className="block text-sm font-medium text-gray-600">
+          Amount
+        </label>
+        <input
+          id="amount"
+          type="number"
+          min="1"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          placeholder="Enter deposit amount"
+          required
+          className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <button
+        type="submit"
+        className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition"
       >
-        <option value="">Select a Goal</option>
-        {goals.map((goal) => (
-          <option key={goal.id} value={goal.id}>
-            {goal.name}
-          </option>
-        ))}
-      </select>
-      <input
-        type="number"
-        placeholder="Amount"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-        className="block w-full mb-2 p-2 border rounded"
-        required
-      />
-      <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">
-        Deposit
+        Deposit Funds
       </button>
     </form>
   );
 }
+
+

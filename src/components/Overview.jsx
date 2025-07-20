@@ -1,3 +1,4 @@
+import React from "react";
 import { daysLeft } from "../utils/dateUtils";
 
 export default function Overview({ goals }) {
@@ -5,26 +6,27 @@ export default function Overview({ goals }) {
   const totalSaved = goals.reduce((sum, g) => sum + g.savedAmount, 0);
   const completed = goals.filter(g => g.savedAmount >= g.targetAmount).length;
 
-  const warnings = goals.filter(goal => {
-    const days = daysLeft(goal.deadline);
-    return days <= 30 && days >= 0 && goal.savedAmount < goal.targetAmount;
-  });
+  const warnings = [];
+  const overdue = [];
 
-  const overdue = goals.filter(goal => {
+  goals.forEach(goal => {
     const days = daysLeft(goal.deadline);
-    return days < 0 && goal.savedAmount < goal.targetAmount;
+    if (days <= 30 && days >= 0 && goal.savedAmount < goal.targetAmount) {
+      warnings.push(goal);
+    }
+    if (days < 0 && goal.savedAmount < goal.targetAmount) {
+      overdue.push(goal);
+    }
   });
 
   return (
     <div className="bg-white p-4 rounded shadow mb-4">
-      <h2 className="text-xl font-bold mb-2">Overview</h2>
-      <p>Total Goals: {totalGoals}</p>
-      <p>Total Saved: ${totalSaved.toLocaleString()}</p>
-      <p>Completed Goals: {completed}</p>
-      <p>Near Deadline: {warnings.length}</p>
-      <p>Overdue: {overdue.length}</p>
+      <h2 className="text-xl font-bold mb-3">📊 Overview</h2>
+      <p><strong>Total Goals:</strong> {totalGoals}</p>
+      <p><strong>Total Saved:</strong> ${totalSaved.toLocaleString()}</p>
+      <p><strong>Completed Goals:</strong> {completed}</p>
+      <p><strong>Goals Near Deadline:</strong> {warnings.length}</p>
+      <p><strong>Overdue Goals:</strong> {overdue.length}</p>
     </div>
   );
 }
-import React from "react";
-import Overview from "./Overview";

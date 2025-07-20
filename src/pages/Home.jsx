@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import GoalForm from "../components/GoalForm";
 import GoalList from "../components/GoalList";
 
@@ -17,8 +17,8 @@ export default function Home() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newGoal)
     })
-    .then(res => res.json())
-    .then(data => setGoals([...goals, data]));
+      .then(res => res.json())
+      .then(data => setGoals([...goals, data]));
   };
 
   const handleDelete = (id) => {
@@ -34,5 +34,3 @@ export default function Home() {
     </>
   );
 }
-import React from "react";
-import GoalForm from "../components/GoalForm";  

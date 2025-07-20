@@ -1,5 +1,5 @@
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import GoalForm from "../components/GoalForm";
 
 export default function GoalDetails() {
@@ -26,5 +26,3 @@ export default function GoalDetails() {
     goal && <GoalForm onSubmit={handleUpdate} initialData={goal} />
   );
 }
-import React from "react";
-import { useParams, useNavigate } from "react-router-dom";  
