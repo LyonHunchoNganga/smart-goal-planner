@@ -18,7 +18,12 @@ export default function GoalCard({ goal, onDelete }) {
           <p className="goal-category">Category: {goal.category}</p>
         </div>
         <div className="goal-details">
-          <div className="goal-deadline">Deadline: {format(deadline, 'MM/dd/yyyy')}</div>
+          <div className="goal-deadline">
+            Deadline: {format(deadline, 'MM/dd/yyyy')}
+            {daysLeft > 0 && <div className="text-xs text-gray-500">{daysLeft} days remaining</div>}
+            {daysLeft === 0 && <div className="text-xs text-orange-500">Due today!</div>}
+            {daysLeft < 0 && <div className="text-xs text-red-500">{Math.abs(daysLeft)} days overdue</div>}
+          </div>
           <div className="goal-tags">
             {isOverdue && <span className="tag tag-high">OVERDUE</span>}
             {isWarning && !isOverdue && <span className="tag tag-medium">WARNING</span>}
